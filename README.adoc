@@ -1,0 +1,8 @@
+= Expensive API
+:author: Anthony Ikeda <anthony.ikeda@gmail.com>
+:toc: left
+
+== Overview
+
+Basic API that will be containerized to then be deployed to AWS EKS and identify it as a cost asset.
+
