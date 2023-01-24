@@ -49,4 +49,7 @@ jobs:
       - id: maven-release
         name: Release with Maven
         run: |
-          ./mvnw release:prepare release:perform -B -s $GITHUB_WORKSPACE/settings.xml
+          ./mvnw release:prepare release:perform -B -s $GITHUB_WORKSPACE/.maven_settings.xml
+        env:
+          CI_DEPLOY_USERNAME: ${{ github.username }}
+          CI_DEPLOY_PASSWORD: ${{ github.token }}
