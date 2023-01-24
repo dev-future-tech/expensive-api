@@ -29,11 +29,12 @@ jobs:
       name: Build with Maven
       run: mvn -B package --file pom.xml
 
+  release:
+    runs-on: ubuntu-latest
+    steps:
     - id: package-release
       name: Release to Packages
-      runs-on: ubuntu-latest
       needs: build
-      steps:
         - uses: actions/checkout@v3
         - id: java-setup
           name: Setup Java 19
