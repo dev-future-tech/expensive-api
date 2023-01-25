@@ -109,4 +109,4 @@ jobs:
           PRODUCT_POD_NAME: localhost
       - id: docker_push
         name: Push to DockerHub
-        run: docker push anthonyikeda/${{artifactId}}:${{artifactVersion}}
+        run: docker push anthonyikeda/${{env.artifactId}}:${{env.artifactVersion}}
