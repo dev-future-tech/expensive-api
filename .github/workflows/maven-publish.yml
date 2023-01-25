@@ -76,6 +76,8 @@ jobs:
         name: Rollback in case the release failed
         if: steps.release.outcome != 'success'
         run: |
+          echo "Application id: ${{env.artifactId}}"
+          echo "Application version: ${{env.artifactVersion}}"
           ./mvnw release:rollback -B -s .maven_settings.xml
         env:
           CI_DEPLOY_USERNAME: ${{github.actor}}
