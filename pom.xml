@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>expensive-api</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>Expensive API</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -19,7 +19,7 @@
     <scm>
         <url>https://github.com/dev-future-tech/expensive-api.git</url>
         <connection>scm:git:${project.scm.url}</connection>
-        <tag>0.0.4</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
