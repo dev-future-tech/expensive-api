@@ -31,7 +31,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - id: release-version
       name: Get the release version
-      run: ./mvnw releae:prepare -DdryRun=true
+      run: ./mvnw release:prepare -DdryRun=true
     - id: artifactId
       name: Get ArtifactId
       run: |
