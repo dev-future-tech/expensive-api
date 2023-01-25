@@ -16,7 +16,7 @@ jobs:
       packages: write
     outputs:
       artifactId: ${{ steps.artifactId.outputs.ARTIFACT_ID }}
-      artifactVersion: ${{ steps.artifactId.outputs.ARTIFACT_VERSION }}
+      artifactVersion: ${{ steps.version.outputs.ARTIFACT_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 19
