@@ -55,5 +55,5 @@ jobs:
         run: |
           ./mvnw release:prepare release:perform -B -s $GITHUB_WORKSPACE/.maven_settings.xml
         env:
-          CI_DEPLOY_USERNAME: ${{ github.username }}
-          CI_DEPLOY_PASSWORD: ${{ github.token }}
+          CI_DEPLOY_USERNAME: ${GITHUB_ACTOR}
+          CI_DEPLOY_PASSWORD: ${GITHUB_TOKEN}
