@@ -54,3 +54,11 @@ jobs:
         env:
           CI_DEPLOY_USERNAME: ${GITHUB_ACTOR}
           CI_DEPLOY_PASSWORD: ${GITHUB_TOKEN}
+      - id: rollback-if-failed
+        name: Rollback in case the release failed
+        if: steps.maven-release.outcome == 'failure'
+        run: |
+          ./mvnw release:rollback -B -s .maven_settings.xml
+        env:
+          CI_DEPLOY_USERNAME: ${GITHUB_ACTOR}
+          CI_DEPLOY_PASSWORD: ${GITHUB_TOKEN}
