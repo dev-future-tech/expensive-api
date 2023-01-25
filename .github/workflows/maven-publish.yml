@@ -48,17 +48,18 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
       - id: release
+        continue-on-error: true
         name: Release with Maven
         run: |
           ./mvnw release:prepare release:perform -B -s .maven_settings.xml
         env:
-          CI_DEPLOY_USERNAME: ${GITHUB_ACTOR}
-          CI_DEPLOY_PASSWORD: ${GITHUB_TOKEN}
+          CI_DEPLOY_USERNAME: ${{github.actor}}
+          CI_DEPLOY_PASSWORD: ${{secrets.GITHUB_TOKEN}}
       - id: rollback-if-failed
         name: Rollback in case the release failed
         if: steps.release.outcome != 'success'
         run: |
           ./mvnw release:rollback -B -s .maven_settings.xml
         env:
-          CI_DEPLOY_USERNAME: ${GITHUB_ACTOR}
-          CI_DEPLOY_PASSWORD: ${GITHUB_TOKEN}
+          CI_DEPLOY_USERNAME: ${{github.actor}}
+          CI_DEPLOY_PASSWORD: ${{secrets.GITHUB_TOKEN}}
