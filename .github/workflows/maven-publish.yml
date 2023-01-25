@@ -14,7 +14,9 @@ jobs:
     permissions:
       contents: read
       packages: write
-
+    outputs:
+      artifactId: ${{ steps.artifactId.outputs.ARTIFACT_ID }}
+      artifactVersion: ${{ steps.artifactId.outputs.ARTIFACT_VERSION }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 19
@@ -66,8 +68,8 @@ jobs:
         continue-on-error: true
         name: Release with Maven
         run: |
-          echo "Application id: ${{ steps.artifactId.outputs.ARTIFACT_ID }}"
-          echo "Application version: ${{ steps.artifactId.outputs.ARTIFACT_VERSION }}"
+          echo "Application id: ${{ needs.build.outputs.artifactId }}"
+          echo "Application version: ${{ needs.build.outputs.artifactVersion }}"
           ./mvnw release:prepare release:perform -B -s .maven_settings.xml
           ./mvnw deploy -s .maven_settings.xml
         env:
@@ -89,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: refs/tags/${{ steps.artifactId.outputs.ARTIFACT_VERSION }}
+          ref: refs/tags/${{ needs.build.outputs.artifactVersion }}
       - id: java-setup
         name: setup java
         uses: actions/setup-java@v3
@@ -112,5 +114,5 @@ jobs:
       - id: docker_push
         name: Push to DockerHub
         run: |
-          echo "Application version: ${{ steps.artifactId.outputs.ARTIFACT_VERSION }}"
-          docker push anthonyikeda/${{ steps.artifactId.outputs.ARTIFACT_ID }}:${{ steps.artifactId.outputs.ARTIFACT_VERSION }}
+          echo "Application version: ${{ needs.build.outputs.artifactVersion }}"
+          docker push anthonyikeda/${{ needs.build.outputs.artifactId }}:${{ needs.build.outputs.artifactVersion }}
