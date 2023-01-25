@@ -2,7 +2,7 @@
 <settings>
     <servers>
         <server>
-            <id>github</id>
+            <id>github-anthonyikeda-expensive-api</id>
             <username>${env.CI_DEPLOY_USERNAME}</username>
             <password>${env.CI_DEPLOY_PASSWORD}</password>
         </server>
