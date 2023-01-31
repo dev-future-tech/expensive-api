@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 public class ExpenseDTO {
 
     @JsonProperty("id")
-    private Long expenseId;
+    private String expenseId;
 
     @JsonProperty("name")
     private String expenseName;
@@ -23,11 +23,11 @@ public class ExpenseDTO {
     @JsonDeserialize(converter = StringToZonedDateTimeConverter.class)
     private ZonedDateTime expenseTime;
 
-    public Long getExpenseId() {
+    public String getExpenseId() {
         return expenseId;
     }
 
-    public void setExpenseId(Long expenseId) {
+    public void setExpenseId(String expenseId) {
         this.expenseId = expenseId;
     }
 

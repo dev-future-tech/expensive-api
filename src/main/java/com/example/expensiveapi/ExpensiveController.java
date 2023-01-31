@@ -1,9 +1,10 @@
 package com.example.expensiveapi;
 
+import com.amazonaws.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -15,18 +16,29 @@ import java.util.stream.LongStream;
 @RequestMapping(path="/api/expensive")
 public class ExpensiveController {
 
+    private final ExpenseManager expenseManager;
+
+    @Autowired
+    public ExpensiveController(ExpenseManager _manager) {
+        this.expenseManager = _manager;
+    }
+
     @GetMapping
     public ResponseEntity<List<ExpenseDTO>> getExpenses() {
-
-        List<ExpenseDTO> expenses = LongStream.range(1,10).mapToObj(value -> {
-            ExpenseDTO dto = new ExpenseDTO();
-            dto.setExpenseId(value);
-            dto.setExpenseName(String.format("Expense number %s", value));
-            dto.setExpenseDescription(String.format("This is the expense that is number %d", value));
-            dto.setExpenseTime(ZonedDateTime.now(ZoneId.of("America/Los_Angeles")));
-            return dto;
-        }).collect(Collectors.toList());
+        List<ExpenseDTO> expenses = this.expenseManager.listExpenses();
 
         return ResponseEntity.ok(expenses);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insertNewExpense(@RequestParam("expense_name") String name, @RequestParam("expense_description") String description) {
+
+        try {
+            this.expenseManager.addExpense(name, description);
+        } catch(InsertExpenseException iee) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 }
