@@ -1,27 +1,31 @@
 package com.example.expensiveapi;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
-public class ExpenseDTO {
+@Entity
+@EntityListeners(value = {ExpensiveDataHandler.class})
+@Table(name = "expensive_things")
+public class Expense {
 
-    @JsonProperty("id")
+
+    @Id
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.UUID,generator = "uuid2")
+    @Column(name = "expense_id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     private String expenseId;
 
-    @JsonProperty("name")
+    @Column(name = "expense_name")
     private String expenseName;
-    @JsonProperty("description")
+
+    @Column(name = "expense_description")
     private String expenseDescription;
 
-    @JsonProperty("time_of_expense")
-    @JsonSerialize(converter = ZonedDateTimeToStringConverter.class)
-    @JsonDeserialize(converter = StringToZonedDateTimeConverter.class)
-    private ZonedDateTime expenseTime;
+    @Column( name = "expense_date")
+    private OffsetDateTime expenseTime;
+
 
     public String getExpenseId() {
         return expenseId;
@@ -47,11 +51,12 @@ public class ExpenseDTO {
         this.expenseDescription = expenseDescription;
     }
 
-    public ZonedDateTime getExpenseTime() {
+    public OffsetDateTime getExpenseTime() {
         return expenseTime;
     }
 
-    public void setExpenseTime(ZonedDateTime expenseTime) {
+    public void setExpenseTime(OffsetDateTime expenseTime) {
         this.expenseTime = expenseTime;
     }
+
 }

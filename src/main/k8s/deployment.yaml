@@ -1,0 +1,34 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: expensive-api
+  labels:
+    name: expensive-api
+  namespace: public-sample-apps
+spec:
+  selector:
+    matchLabels:
+      name: expensive-api
+  template:
+    metadata:
+      labels:
+        name: expensive-api
+    spec:
+      serviceAccountName: ddb-sa-2
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: exposure
+                    operator: In
+                    values:
+                      - public
+      containers:
+        - name: expensive-api
+          image: docker.io/anthonyikeda/expensive-api:0.0.15
+          ports:
+            - containerPort: 8080
+              name: apiport
+              protocol: TCP
+
