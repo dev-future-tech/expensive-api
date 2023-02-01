@@ -1,20 +1,21 @@
 package com.example.expensiveapi;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Entity
+@EntityListeners(value = {ExpensiveDataHandler.class})
 @Table(name = "expensive_things")
 public class Expense {
 
+
     @Id
-    @GeneratedValue
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "expense_id")
-    private UUID expenseId;
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.UUID,generator = "uuid2")
+    @Column(name = "expense_id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
+    private String expenseId;
 
     @Column(name = "expense_name")
     private String expenseName;
@@ -26,11 +27,11 @@ public class Expense {
     private OffsetDateTime expenseTime;
 
 
-    public UUID getExpenseId() {
+    public String getExpenseId() {
         return expenseId;
     }
 
-    public void setExpenseId(UUID expenseId) {
+    public void setExpenseId(String expenseId) {
         this.expenseId = expenseId;
     }
 
@@ -57,4 +58,5 @@ public class Expense {
     public void setExpenseTime(OffsetDateTime expenseTime) {
         this.expenseTime = expenseTime;
     }
+
 }

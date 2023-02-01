@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -34,11 +35,10 @@ public class ExpensiveController {
     public ResponseEntity<Void> insertNewExpense(@RequestParam("expense_name") String name, @RequestParam("expense_description") String description) {
 
         try {
-            this.expenseManager.addExpense(name, description);
+            var created = this.expenseManager.addExpense(name, description);
+            return ResponseEntity.created(URI.create(String.format("/api/expensive/%s", created.getExpenseId().toString()))).build();
         } catch(InsertExpenseException iee) {
             return ResponseEntity.internalServerError().build();
         }
-
-        return ResponseEntity.ok().build();
     }
 }
